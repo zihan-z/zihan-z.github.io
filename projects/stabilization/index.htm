@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Plane-based Stabilization</title>
+
+</head>
+<body>
+<h2 style="text-align: center;">Plane-Based Content Preserving Warps for Video Stabilization</h2>
+
+<div style="text-align: center;">
+<a href="https://faculty.ist.psu.edu/zzhou/" target="_blank">Zihan Zhou</a><sup>1</sup>, 
+<a href="https://research.adobe.com/person/hailin-jin/" target="_blank">Hailin Jin</a><sup>2</sup>, and
+<a href="http://yima.csl.illinois.edu/" target="_blank">Yi Ma</a><sup>3</sup><br>
+<sup>1</sup>University of Illinois at Urbana-Champaign,
+<sup>2</sup>Adobe, 
+<sup>3</sup>Microsoft Research Asia<br><br>
+<span style="font-weight: normal;"></span>
+<img style="" src="teaser.jpg">
+<br>
+<span style="font-weight: normal;"></span>
+</div>
+
+<div align="center">
+  <table width="80%" border="0" cellpadding="5">
+    <tr align="left"> 
+<th>
+      <td><p><h3>Abstract</h3></p>
+        <p>Recently, a new image deformation technique called content-preserving warping (CPW) has been successfully employed to produce the state-of-the-art video stabilization results in many challenging cases. The key insight of CPW is that the true image deformation due to viewpoint change can be well approximated by a carefully constructed warp using a set of sparsely constructed 3D points only. However, since CPW solely relies on the tracked feature points to guide the warping, it works poorly in large textureless regions, such as ground and building interiors. To overcome this limitation, in this paper we present a hybrid approach for novel view synthesis, observing that the textureless regions often correspond to large planar surfaces in the scene. Particularly, given a jittery video, we first segment each frame into piecewise planar regions as well as regions labeled as non-planar using Markov random fields. Then, a new warp is computed by estimating a single homography for regions belong to the same plane, while inheriting results from CPW in the non-planar regions. We demonstrate how the segmentation information can be efficiently obtained and seamlessly integrated into the stabilization framework. Experimental results on a variety of real video sequences verify the effectiveness of our method.</p></td>
+    </tr>
+    <tr align="left">
+      <th>    
+      <td><p><h3>Paper</h3></p>
+      <p> <a href="https://faculty.ist.psu.edu/zzhou/paper/cvpr13_stabilization.pdf">Plane-Based Content Preserving Warps for Video Stabilization</a><br>
+      Zihan Zhou, Hailin Jin, and Yi Ma<br>
+      IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2013.
+   </td>
+    </tr>
+
+    <tr align="left">
+      <th>    
+      <td><p><h3>Video Results</h3></p>
+      <p>Results on individual videos can be found <a href="results.htm">here</a>.<br></p>
+   <video width="640" height="360" controls="controls">
+      <source type="video/mp4" src="cvpr13_video_high.mp4"/>
+   </video>
+
+   </td>
+    </tr>
+  </table>
+</div>
+
+</body></html>
