@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zihan Zhou — Publications</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------- THEME TOKENS (identical to index.html) ---------- */
+  :root {
+    --display: "Space Grotesk", system-ui, sans-serif;
+    --body: "Inter", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --maxw: 940px;
+    --radius: 14px;
+    --accent: #4fd6c9;
+    --accent-ink: #062b28;
+    --ease: cubic-bezier(.2,.7,.2,1);
+  }
+  [data-theme="dark"] {
+    --bg: #0a0e14;
+    --bg-soft: #0f151e;
+    --line: #1d2734;
+    --text: #e7eef6;
+    --text-dim: #8a99ad;
+    --pill-active-bg: #e7eef6;
+    --pill-active-ink: #0a0e14;
+    --card-a: linear-gradient(150deg, #11233f 0%, #0c1830 60%, #0a1226 100%);
+    --card-b: linear-gradient(150deg, #0e3330 0%, #0b2622 60%, #091d1b 100%);
+    --shadow: 0 18px 50px -24px rgba(0,0,0,.8);
+  }
+  [data-theme="light"] {
+    --bg: #ffffff;
+    --bg-soft: #f6f8fb;
+    --line: #e3e8ef;
+    --text: #131a24;
+    --text-dim: #5b6b7e;
+    --pill-active-bg: #131a24;
+    --pill-active-ink: #ffffff;
+    --card-a: linear-gradient(150deg, #1b3a64 0%, #14294a 100%);
+    --card-b: linear-gradient(150deg, #18564f 0%, #103e39 100%);
+    --shadow: 0 16px 40px -26px rgba(20,40,70,.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background .35s var(--ease), color .35s var(--ease);
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px 96px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ---------- TOP BAR ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap; padding: 26px 0 8px;
+  }
+  .nav { display: flex; gap: 8px; }
+  .tab {
+    font-family: var(--mono); font-size: 12.5px; font-weight: 600;
+    letter-spacing: .04em; color: var(--text-dim);
+    padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line);
+    background: transparent; cursor: pointer; transition: all .2s var(--ease);
+  }
+  .tab:hover { color: var(--text); border-color: var(--accent); text-decoration: none; }
+  .tab[aria-current="page"] {
+    background: var(--pill-active-bg); color: var(--pill-active-ink); border-color: transparent;
+  }
+  .toggle {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .04em;
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--text-dim); background: transparent;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 7px 13px; cursor: pointer; transition: all .2s var(--ease);
+  }
+  .toggle:hover { color: var(--text); border-color: var(--accent); }
+
+  /* ---------- PAGE HEAD ---------- */
+  .pagehead { padding: 26px 0 0; }
+  .pagehead h1 {
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(28px, 4.5vw, 40px); line-height: 1.05; margin: 6px 0 8px; letter-spacing: -.01em;
+  }
+  .pagehead p { margin: 0; color: var(--text-dim); font-size: 15px; max-width: 60ch; }
+
+  /* ---------- FILTERS (optional, cosmetic) ---------- */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 8px; }
+  .filter {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .03em;
+    color: var(--text-dim); border: 1px solid var(--line); background: transparent;
+    padding: 6px 12px; border-radius: 999px; cursor: pointer; transition: all .18s var(--ease);
+  }
+  .filter:hover { color: var(--text); border-color: var(--accent); }
+  .filter.is-active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+  /* ---------- DIVIDER ---------- */
+  .rule { height: 2px; background: var(--text); opacity: .9; margin: 22px 0 4px; border-radius: 2px; }
+
+  /* ---------- YEAR EYEBROW ---------- */
+  .eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--mono); font-size: 12px; font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--accent);
+    margin: 40px 0 16px;
+  }
+  .eyebrow::before { content: "✦"; font-size: 11px; }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  /* ---------- PUBLICATION ENTRY ---------- */
+  .pub {
+    display: grid; grid-template-columns: 26px 1fr; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid var(--line);
+  }
+  .pub:last-child { border-bottom: 0; }
+  .pub .marker { font-family: var(--mono); font-size: 12px; color: var(--accent); padding-top: 3px; }
+  .pub h3 { margin: 0 0 4px; font-family: var(--display); font-weight: 600; font-size: 16.5px; line-height: 1.3; }
+  .pub .authors { margin: 0 0 4px; font-size: 13.5px; color: var(--text-dim); }
+  .pub .authors b { color: var(--text); font-weight: 600; }
+  .pub .venue { margin: 0 0 7px; font-family: var(--mono); font-size: 12px; color: var(--accent); }
+  .pub .venue .badge {
+    color: var(--text); border: 1px solid var(--line); border-radius: 5px;
+    padding: 1px 6px; margin-left: 8px; font-size: 11px;
+  }
+  .pub .meta { display: flex; gap: 14px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; }
+
+  footer { margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--line);
+           font-family: var(--mono); font-size: 12px; color: var(--text-dim); letter-spacing: .03em; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 720px) {
+    .pub { grid-template-columns: 1fr; gap: 4px; }
+    .pub .marker { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <!-- ============ TOP BAR ============ -->
+  <div class="topbar">
+    <nav class="nav" aria-label="Primary">
+      <a class="tab" href="index.html">Home</a>
+      <a class="tab" href="publications.html" aria-current="page">Full Publication List</a>
+    </nav>
+    <button class="toggle" id="themeToggle" aria-label="Switch color theme">
+      <span id="toggleIcon">☼</span><span id="toggleLabel">Light Mode</span>
+    </button>
+  </div>
+
+  <!-- ============ PAGE HEAD ============ -->
+  <div class="pagehead">
+    <h1>Publications</h1>
+    <p>Full list, newest first. <b>*</b> denotes equal contribution; my name is shown in bold.</p>
+  </div>
+
+  <!-- Optional filter row — purely cosmetic unless you wire up the JS below.
+       Delete this block if you don't want it. -->
+  <div class="filters" id="filters">
+    <button class="filter is-active" data-filter="all">All</button>
+    <button class="filter" data-filter="conf">Conference</button>
+    <button class="filter" data-filter="journal">Journal</button>
+    <button class="filter" data-filter="preprint">Preprint</button>
+  </div>
+
+  <!-- ============ 2026 ============ -->
+  <div class="eyebrow">2026</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[1]</div>
+    <div>
+      <h3>SpatialGen: Layout-guided 3D Indoor Scene Generation</h3>
+      <p class="authors">Chuan Fang, Heng Li, Yixun Liang, Jia Zheng, Yongsen Mao, Yuan Liu, Rui Tang, <b>Zihan Zhou</b>, Ping Tan</p>
+      <p class="venue">3DV 2026</p>
+      <div class="meta"><a href="https://arxiv.org/abs/2509.14981">↗ Paper</a><a href="https://manycore-research.github.io/SpatialGen/">↗ Project</a><a href="https://github.com/manycore-research/SpatialGen">↗ Code</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2025 ============ -->
+  <div class="eyebrow">2025</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[2]</div>
+    <div>
+      <h3>SpatialLM: Training Large Language Models for Structured Indoor Modeling</h3>
+      <p class="authors">Yongsen Mao*, Junhao Zhong*, Chuan Fang, Jia Zheng, Rui Tang, Hao Zhu, Ping Tan, <b>Zihan Zhou</b></p>
+      <p class="venue">NeurIPS 2025</p>
+      <div class="meta"><a href="https://arxiv.org/abs/2506.07491">↗ Paper</a><a href="https://manycore-research.github.io/SpatialLM/">↗ Project</a><a href="https://github.com/manycore-research/SpatialLM">↗ Code</a><a href="https://huggingface.co/collections/manycore-research/spatiallm-67d3e930cbe5c410270e6f85">↗ Model/Data</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[3]</div>
+    <div>
+      <h3>From 2D CAD Drawings to 3D Parametric Models: A Vision-Language Approach</h3>
+      <p class="authors">Xilin Wang*, Jia Zheng*, Yuanchao Hu, Hao Zhu, Qian Yu, <b>Zihan Zhou</b></p>
+      <p class="venue">AAAI 2025</p>
+      <div class="meta"><a href="https://arxiv.org/abs/2412.11892">↗ Paper</a><a href="https://manycore-research.github.io/CAD2Program/">↗ Project</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2024 ============ -->
+  <div class="eyebrow">2024</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[4]</div>
+    <div>
+      <h3>NeRF-Enhanced Outpainting for Faithful Field-of-View Extrapolation</h3>
+      <p class="authors">Rui Yu*, Jiachen Liu*, <b>Zihan Zhou</b>, Sharon X. Huang</p>
+      <p class="venue">ICRA 2024</p>
+      <div class="meta"><a href="https://arxiv.org/pdf/2309.13240.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2023 ============ -->
+  <div class="eyebrow">2023</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[5]</div>
+    <div>
+      <h3>PlankAssembly: Robust 3D Reconstruction from Three Orthographic Views with Learnt Shape Programs</h3>
+      <p class="authors">Wentao Hu, Jia Zheng, Zixin Zhang, Xiaojun Yuan, Jian Yin, <b>Zihan Zhou</b></p>
+      <p class="venue">ICCV 2023</p>
+      <div class="meta"><a href="https://openaccess.thecvf.com/content/ICCV2023/papers/Hu_PlankAssembly_Robust_3D_Reconstruction_from_Three_Orthographic_Views_with_Learnt_ICCV_2023_paper.pdf">↗ Paper</a><a href="https://manycore-research.github.io/PlankAssembly/">↗ Project</a><a href="https://github.com/manycore-research/PlankAssembly/">↗ Code</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[6]</div>
+    <div>
+      <h3>Two-stage Content-Aware Layout Generation for Poster Designs</h3>
+      <p class="authors">Shang Chai, Liansheng Zhuang, Fengying Yan, <b>Zihan Zhou</b></p>
+      <p class="venue">ACM MM 2023</p>
+      <div class="meta"><a href="https://dl.acm.org/doi/abs/10.1145/3581783.3612275">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2022 ============ -->
+  <div class="eyebrow">2022</div>
+
+  <article class="pub" data-type="preprint">
+    <div class="marker">[7]</div>
+    <div>
+      <h3>Deep Learning Assisted Optimization for 3D Reconstruction from Single 2D Line Drawings</h3>
+      <p class="authors">Jia Zheng, Yifan Zhu, Kehan Wang, Qiang Zou, <b>Zihan Zhou</b></p>
+      <p class="venue">arXiv:2209.02692, 2022</p>
+      <div class="meta"><a href="https://arxiv.org/abs/2209.02692">↗ Paper</a><a href="https://manycore-research.github.io/cstr/">↗ Project</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[8]</div>
+    <div>
+      <h3>End-to-end Graph-constrained Vectorized Floorplan Generation with Panoptic Refinement</h3>
+      <p class="authors">Jiachen Liu, Yuan Xue, Jose Duarte, Krishnendra Shekhawat, <b>Zihan Zhou</b>, Xiaolei Huang</p>
+      <p class="venue">ECCV 2022</p>
+      <div class="meta"><a href="https://arxiv.org/abs/2207.13268v1">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[9]</div>
+    <div>
+      <h3>Neural Face Identification in a 2D Wireframe Projection of a Manifold Object</h3>
+      <p class="authors">Kehan Wang, Jia Zheng, <b>Zihan Zhou</b></p>
+      <p class="venue">CVPR 2022</p>
+      <div class="meta"><a href="https://arxiv.org/abs/2203.04229">↗ Paper</a><a href="https://manycore-research.github.io/faceformer/">↗ Project</a><a href="https://github.com/manycore-research/faceformer">↗ Code</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[10]</div>
+    <div>
+      <h3>Deep Depth from Focus with Differential Focus Volume</h3>
+      <p class="authors">Fengting Yang, Xiaolei Huang, <b>Zihan Zhou</b></p>
+      <p class="venue">CVPR 2022</p>
+      <div class="meta"><a href="https://arxiv.org/abs/2112.01712">↗ Paper</a><a href="https://github.com/fuy34/DFV">↗ Code</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="journal">
+    <div class="marker">[11]</div>
+    <div>
+      <h3>Iterative Design and Prototyping of Computer Vision Mediated Remote Sighted Assistance</h3>
+      <p class="authors">Jingyi Xie, Madison Reddie, Sooyeon Lee, Syed M. Billah, <b>Zihan Zhou</b>, Chun-Hua Tsai, John M. Carroll</p>
+      <p class="venue">ACM ToCHI 2022</p>
+      <div class="meta"><a href="https://doi.org/10.1145/3501298">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2021 ============ -->
+  <div class="eyebrow">2021</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[12]</div>
+    <div>
+      <h3>Towards Robust Human Trajectory Prediction in Raw Videos</h3>
+      <p class="authors">Rui Yu, <b>Zihan Zhou</b></p>
+      <p class="venue">IROS 2021</p>
+      <div class="meta"><a href="http://arxiv.org/abs/2108.08259">↗ Paper</a><a href="https://github.com/rui-yu-public/Retracking-by-Prediction">↗ Code</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2020 ============ -->
+  <div class="eyebrow">2020</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[13]</div>
+    <div>
+      <h3>Neural Wireframe Renderer: Learning Wireframe to Image Translations</h3>
+      <p class="authors">Yuan Xue, <b>Zihan Zhou</b>, Xiaolei Huang</p>
+      <p class="venue">ECCV 2020</p>
+      <div class="meta"><a href="http://arxiv.org/abs/1912.03840">↗ Paper</a><a href="https://github.com/YuanXue1993/WireframeRenderer">↗ Code</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[14]</div>
+    <div>
+      <h3>Structured3D: A Large Photo-realistic Dataset for Structured 3D Modeling</h3>
+      <p class="authors">Jia Zheng*, Junfei Zhang*, Jing Li, Rui Tang, Shenghua Gao, <b>Zihan Zhou</b></p>
+      <p class="venue">ECCV 2020</p>
+      <div class="meta"><a href="http://arxiv.org/abs/1908.00222">↗ Paper</a><a href="https://structured3d-dataset.org/">↗ Project</a><a href="https://github.com/bertjiazheng/Structured3D">↗ Code</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[15]</div>
+    <div>
+      <h3>Data-driven Distributed State Estimation and Behavior Modeling in Sensor Networks</h3>
+      <p class="authors">Rui Yu, Zhenyuan Yuan, Minghui Zhu, <b>Zihan Zhou</b></p>
+      <p class="venue">IROS 2020</p>
+      <div class="meta"><a href="http://arxiv.org/abs/2009.10827">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[16]</div>
+    <div>
+      <h3>Superpixel Segmentation with Fully Convolutional Networks</h3>
+      <p class="authors">Fengting Yang, Qian Sun, Hailin Jin, <b>Zihan Zhou</b></p>
+      <p class="venue">CVPR 2020</p>
+      <div class="meta"><a href="http://arxiv.org/abs/2003.12929">↗ Paper</a><a href="https://github.com/fuy34/superpixel_fcn">↗ Code</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2019 ============ -->
+  <div class="eyebrow">2019</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[17]</div>
+    <div>
+      <h3>Single-Image Piece-Wise Planar 3D Reconstruction via Associative Embedding</h3>
+      <p class="authors">Zehao Yu*, Jia Zheng*, Dongze Lian, <b>Zihan Zhou</b>, Shenghua Gao</p>
+      <p class="venue">CVPR 2019</p>
+      <div class="meta"><a href="http://openaccess.thecvf.com/content_CVPR_2019/html/Yu_Single-Image_Piece-Wise_Planar_3D_Reconstruction_via_Associative_Embedding_CVPR_2019_paper.html">↗ Paper</a><a href="https://github.com/svip-lab/PlanarReconstruction">↗ Code/Data</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2018 ============ -->
+  <div class="eyebrow">2018</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[18]</div>
+    <div>
+      <h3>Recovering 3D Planes from a Single Image via Convolutional Neural Networks</h3>
+      <p class="authors">Fengting Yang, <b>Zihan Zhou</b></p>
+      <p class="venue">ECCV 2018</p>
+      <div class="meta"><a href="paper/ECCV18-plane.pdf">↗ Paper</a><a href="paper/ECCV18-plane-supp.pdf">↗ Supp.</a><a href="https://github.com/fuy34/planerecover">↗ Code/Data</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[19]</div>
+    <div>
+      <h3>Learning to Parse Wireframes in Images of Man-Made Environments</h3>
+      <p class="authors">Kun Huang, Yifan Wang, <b>Zihan Zhou</b>, Tianjiao Ding, Shenghua Gao, Yi Ma</p>
+      <p class="venue">CVPR 2018</p>
+      <div class="meta"><a href="paper/CVPR18-Wireframe.pdf">↗ Paper</a><a href="paper/CVPR18-Wireframe-supp.pdf">↗ Supp.</a><a href="https://github.com/huangkuns/wireframe">↗ Code/Data</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="journal">
+    <div class="marker">[20]</div>
+    <div>
+      <h3>Discovering Triangles in Portraits for Supporting Photographic Creation</h3>
+      <p class="authors">Siqiong He, <b>Zihan Zhou</b>, Farshid Farhat, James Z. Wang</p>
+      <p class="venue">IEEE TMM 2018</p>
+      <div class="meta"><a href="paper/TMM17-Portrait.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2017 ============ -->
+  <div class="eyebrow">2017</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[21]</div>
+    <div>
+      <h3>Beyond Saliency: Assessing Visual Balance with High-Level Cues</h3>
+      <p class="authors">Baris Kandemir, <b>Zihan Zhou</b>, Jia Li, James Z. Wang</p>
+      <p class="venue">ACM MM Engagement Workshop 2017</p>
+      <div class="meta"><a href="paper/MM17-Balance.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="journal">
+    <div class="marker">[22]</div>
+    <div>
+      <h3>Detecting Dominant Vanishing Points in Natural Scenes with Application to Composition-Sensitive Image Retrieval</h3>
+      <p class="authors"><b>Zihan Zhou</b>, Farshid Farhat, James Z. Wang</p>
+      <p class="venue">IEEE TMM 2017</p>
+      <div class="meta"><a href="http://arxiv.org/abs/1608.04267">↗ Paper</a><a href="projects/vpdetection">↗ Project</a><a href="https://github.com/zihan-z/vpdet_tmm17">↗ Code</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[23]</div>
+    <div>
+      <h3>Improving Offline Handwritten Chinese Character Recognition by Iterative Refinement</h3>
+      <p class="authors">Xiao Yang, Dafang He, <b>Zihan Zhou</b>, Daniel Kifer, C. Lee Giles</p>
+      <p class="venue">ICDAR 2017</p>
+      <div class="meta"><a href="paper/ICDAR17.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[24]</div>
+    <div>
+      <h3>Learning to Read Irregular Text with Attention Mechanisms</h3>
+      <p class="authors">Xiao Yang, Dafang He, <b>Zihan Zhou</b>, Daniel Kifer, C. Lee Giles</p>
+      <p class="venue">IJCAI 2017</p>
+      <div class="meta"><a href="paper/IJCAI17-IrregularText.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="journal">
+    <div class="marker">[25]</div>
+    <div>
+      <h3>Label Information Guided Graph Construction for Semi-Supervised Learning</h3>
+      <p class="authors">Liansheng Zhuang, <b>Zihan Zhou</b>, Shenghua Gao, Jingwen Yin, Zhouchen Lin, Yi Ma</p>
+      <p class="venue">IEEE TIP 2017</p>
+      <div class="meta"><a href="paper/TIP17-LabelGraphSSL.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[26]</div>
+    <div>
+      <h3>Smart Library: Identifying Books in a Library using Richly Supervised Deep Scene Text Reading</h3>
+      <p class="authors">Xiao Yang, Dafang He, Wenyi Huang, Alexander Ororbia, <b>Zihan Zhou</b>, Daniel Kifer, C. Lee Giles</p>
+      <p class="venue">JCDL 2017 <span class="badge">Short Paper</span></p>
+      <div class="meta"><a href="paper/JCDL17-SmartLibrary.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[27]</div>
+    <div>
+      <h3>Multi-scale FCN with Instance Aware Segmentation for Arbitrary Oriented Word Spotting in the Wild</h3>
+      <p class="authors">Dafang He, Xiao Yang, Chen Liang, <b>Zihan Zhou</b>, Alexander Ororbia, Daniel Kifer, C. Lee Giles</p>
+      <p class="venue">CVPR 2017</p>
+      <div class="meta"><a href="http://openaccess.thecvf.com/content_cvpr_2017/html/He_Multi-Scale_FCN_With_CVPR_2017_paper.html">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2016 ============ -->
+  <div class="eyebrow">2016</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[28]</div>
+    <div>
+      <h3>Robust Plane-based Calibration of Multiple Non-Overlapping Cameras</h3>
+      <p class="authors">Chen Zhu, <b>Zihan Zhou</b>, Ziran Xing, Yanbing Dong, Yi Ma, Jingyi Yu</p>
+      <p class="venue">3DV 2016</p>
+      <div class="meta"><a href="paper/3dv16-calibration.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[29]</div>
+    <div>
+      <h3>Aggregating Local Context for Accurate Scene Text Detection</h3>
+      <p class="authors">Dafang He, Xiao Yang, Wenyi Huang, <b>Zihan Zhou</b>, Daniel Kifer, C. Lee Giles</p>
+      <p class="venue">ACCV 2016</p>
+      <div class="meta"><a href="paper/accv2016.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[30]</div>
+    <div>
+      <h3>Detecting Arbitrary Orientated Text in the Wild with a Visual Attention Model</h3>
+      <p class="authors">Wenyi Huang, Dafang He, Xiao Yang, <b>Zihan Zhou</b>, Daniel Kifer, C. Lee Giles</p>
+      <p class="venue">ACM MM 2016 <span class="badge">Short Paper</span></p>
+      <div class="meta"><a href="paper/mm2016.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2015 ============ -->
+  <div class="eyebrow">2015</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[31]</div>
+    <div>
+      <h3>Modeling Perspective Effects in Photographic Composition</h3>
+      <p class="authors"><b>Zihan Zhou</b>, Siqiong He, Jia Li, James Z. Wang</p>
+      <p class="venue">ACM MM 2015</p>
+      <div class="meta"><a href="http://infolab.stanford.edu/~wangz/project/imsearch/Aesthetics/ACMMM15/zhou.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2013 ============ -->
+  <div class="eyebrow">2013</div>
+
+  <article class="pub" data-type="journal">
+    <div class="marker">[32]</div>
+    <div>
+      <h3>Fast L1-Minimization Algorithms for Robust Face Recognition</h3>
+      <p class="authors">Allen Yang, <b>Zihan Zhou</b>, Arvind Ganesh, Shankar Sastry, Yi Ma</p>
+      <p class="venue">IEEE TIP 2013</p>
+      <div class="meta"><a href="http://arxiv.org/abs/1007.3753">↗ Paper</a><a href="http://www.eecs.berkeley.edu/~yang/software/l1benchmark/index.html">↗ Code</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[33]</div>
+    <div>
+      <h3>Plane-Based Content-Preserving Warps for Video Stabilization</h3>
+      <p class="authors"><b>Zihan Zhou</b>, Hailin Jin, Yi Ma</p>
+      <p class="venue">CVPR 2013</p>
+      <div class="meta"><a href="paper/cvpr13_stabilization.pdf">↗ Paper</a><a href="projects/stabilization">↗ Project</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[34]</div>
+    <div>
+      <h3>Single-Sample Face Recognition with Image Corruption and Misalignment via Sparse Illumination Transfer</h3>
+      <p class="authors">Liansheng Zhuang, Allen Yang, <b>Zihan Zhou</b>, Shankar Sastry, Yi Ma</p>
+      <p class="venue">CVPR 2013</p>
+      <div class="meta"><a href="paper/cvpr13_robust_alignment.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2012 ============ -->
+  <div class="eyebrow">2012</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[35]</div>
+    <div>
+      <h3>Robust Plane-Based Structure from Motion</h3>
+      <p class="authors"><b>Zihan Zhou</b>, Hailin Jin, Yi Ma</p>
+      <p class="venue">CVPR 2012</p>
+      <div class="meta"><a href="paper/1442.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="journal">
+    <div class="marker">[36]</div>
+    <div>
+      <h3>Towards a Practical Face Recognition System: Robust Alignment and Illumination by Sparse Representation</h3>
+      <p class="authors">Andrew Wagner, John Wright, Arvind Ganesh, <b>Zihan Zhou</b>, Hossein Mobahi, Yi Ma</p>
+      <p class="venue">IEEE TPAMI 2012</p>
+      <div class="meta"><a href="paper/faces_system.pdf">↗ Paper</a><a href="http://people.eecs.berkeley.edu/~yima/recognition/Home.html">↗ Project</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2011 ============ -->
+  <div class="eyebrow">2011</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[37]</div>
+    <div>
+      <h3>Holistic Reconstruction of Urban Structures from Low-rank Textures</h3>
+      <p class="authors">Hossein Mobahi, <b>Zihan Zhou</b>, Allen Yang, Yi Ma</p>
+      <p class="venue">ICCV Workshop on 3D Representation and Recognition 2011</p>
+      <div class="meta"><a href="paper/iccv11_3d_workshop.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2010 ============ -->
+  <div class="eyebrow">2010</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[38]</div>
+    <div>
+      <h3>Towards a Robust Face Recognition System using Compressive Sensing</h3>
+      <p class="authors">Allen Yang, <b>Zihan Zhou</b>, Yi Ma, Shankar Sastry</p>
+      <p class="venue">InterSpeech 2010</p>
+      <div class="meta"><a href="http://www.eecs.berkeley.edu/%7Eyang/paper/YangA_Interspeech2010.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[39]</div>
+    <div>
+      <h3>Stable Principal Component Pursuit</h3>
+      <p class="authors"><b>Zihan Zhou</b>, Xiaodong Li, John Wright, Emmanuel Candes, Yi Ma</p>
+      <p class="venue">ISIT 2010</p>
+      <div class="meta"><a href="paper/isit_noise.pdf">↗ Paper</a><a href="http://people.eecs.berkeley.edu/~yima/matrix-rank/home.html">↗ Project</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2009 ============ -->
+  <div class="eyebrow">2009</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[40]</div>
+    <div>
+      <h3>Face Recognition with Contiguous Occlusion using Markov Random Fields</h3>
+      <p class="authors"><b>Zihan Zhou</b>, Andrew Wagner, Hossein Mobahi, John Wright, Yi Ma</p>
+      <p class="venue">ICCV 2009</p>
+      <div class="meta"><a href="paper/face_iccv09.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[41]</div>
+    <div>
+      <h3>Towards a Practical Face Recognition System: Robust Registration and Illumination via Sparse Representation</h3>
+      <p class="authors">Andrew Wagner, John Wright, Arvind Ganesh, <b>Zihan Zhou</b>, Yi Ma</p>
+      <p class="venue">CVPR 2009</p>
+      <div class="meta"><a href="paper/cvpr09_faces.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[42]</div>
+    <div>
+      <h3>Separation of a Subspace-Sparse Signal: Algorithms and Conditions</h3>
+      <p class="authors">Arvind Ganesh, <b>Zihan Zhou</b>, Yi Ma</p>
+      <p class="venue">ICASSP 2009</p>
+      <div class="meta"><a href="paper/smp.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ 2008 ============ -->
+  <div class="eyebrow">2008</div>
+
+  <article class="pub" data-type="conf">
+    <div class="marker">[43]</div>
+    <div>
+      <h3>Nearest-Subspace Patch Matching for Face Recognition Under Varying Pose and Illumination</h3>
+      <p class="authors"><b>Zihan Zhou</b>, Arvind Ganesh, John Wright, Shen-Fu Tsai, Yi Ma</p>
+      <p class="venue">FG 2008</p>
+      <div class="meta"><a href="paper/fgr08.pdf">↗ Paper</a></div>
+    </div>
+  </article>
+
+  <!-- ============ THESES & BOOK CHAPTER ============ -->
+  <div class="eyebrow">Dissertation, Thesis &amp; Book Chapter</div>
+
+  <article class="pub">
+    <div class="marker">◆</div>
+    <div>
+      <h3>Exploring Structural Regularities for Robust 3D Reconstruction of Urban Scenes</h3>
+      <p class="authors">Ph.D. Dissertation, University of Illinois at Urbana-Champaign, 2013 · Advisor: Prof. Yi Ma</p>
+      <div class="meta"><a href="https://www.ideals.illinois.edu/handle/2142/44311">↗ PDF</a></div>
+    </div>
+  </article>
+
+  <article class="pub">
+    <div class="marker">◆</div>
+    <div>
+      <h3>Face Recognition under Varying Illumination, Pose and Contiguous Occlusion</h3>
+      <p class="authors">M.S. Thesis, University of Illinois at Urbana-Champaign, 2010 · Advisor: Prof. Yi Ma</p>
+      <div class="meta"><a href="https://www.ideals.illinois.edu/handle/2142/16486">↗ PDF</a></div>
+    </div>
+  </article>
+
+  <article class="pub">
+    <div class="marker">◆</div>
+    <div>
+      <h3>Face Recognition by Sparse Representation</h3>
+      <p class="authors">John Wright, Allen Yang, Arvind Ganesh, Andrew Wagner, <b>Zihan Zhou</b>, Yi Ma</p>
+      <p class="venue">In <a href="http://www.cambridge.org/gb/knowledge/isbn/item6585763/?site_locale=en_GB">Compressed Sensing: Theory and Applications</a>, 2012</p>
+      <div class="meta"><a href="https://www.eecs.berkeley.edu/~yang/paper/face_chapter.pdf">↗ Book Chapter</a></div>
+    </div>
+  </article>
+
+  <footer>© 2026 Zihan Zhou · <a href="index.html">← Back to home</a></footer>
+
+</div>
+
+<script>
+  /* ----- Theme toggle (identical behavior to index.html) ----- */
+  const root = document.documentElement;
+  const icon = document.getElementById('toggleIcon');
+  const label = document.getElementById('toggleLabel');
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    icon.textContent = theme === 'dark' ? '☼' : '☾';
+    label.textContent = (theme === 'dark' ? 'Light' : 'Dark') + ' Mode';
+  }
+  const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+  apply(prefersLight ? 'light' : 'dark');
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ----- Optional filter logic (works with the .filter buttons above) ----- */
+  const filterBar = document.getElementById('filters');
+  if (filterBar) {
+    filterBar.addEventListener('click', (e) => {
+      const btn = e.target.closest('.filter');
+      if (!btn) return;
+      filterBar.querySelectorAll('.filter').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('.pub').forEach(p => {
+        p.style.display = (f === 'all' || p.dataset.type === f) ? '' : 'none';
+      });
+    });
+  }
+</script>
+</body>
+</html>
